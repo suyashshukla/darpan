@@ -1,0 +1,11 @@
+<div>
+    <div class="row">
+        <div class="col-6">
+            <app-web-editor [text]="text" (textChange)="onTextChange($event)"></app-web-editor>
+        </div>
+
+        <div class="col-6">
+            <ngx-json-viewer [json]="text"></ngx-json-viewer>
+        </div>
+    </div>
+</div>
