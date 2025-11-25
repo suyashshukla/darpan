@@ -13,11 +13,29 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ace-builds@1.43.4/css/ace.min.css">
   <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.43.4/src-min-noconflict/ace.min.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="icon" type="image/x-icon" href="./assets/darpan-favicon-transaparent.png">
+  <style>
+    .centered-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .center-logo {
+      height: 200px;
+      object-fit: contain;
+    }
+  </style>
 </head>
 
 <body>
-  <app-root></app-root>
+  <app-root>
+    <div class="centered-container">
+      <img src="./assets/darpan-transparent.webp" class="center-logo" alt="Loading..." />
+    </div>
+  </app-root>
 </body>
 
 </html>
