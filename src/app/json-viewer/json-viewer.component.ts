@@ -14,7 +14,7 @@ export class JsonViewerComponent implements OnInit {
             this.text = JSON.parse(window.localStorage.getItem('jsonData')!);
         }
     }
-    text: string = '{}';
+    text: any = {};
 
     onTextChange(updatedText: string) {
         try {
