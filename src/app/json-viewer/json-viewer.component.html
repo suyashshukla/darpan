@@ -3,6 +3,12 @@
     <div class="text-center py-4 shadow-sm bg-white">
         <img src="./assets/darpan-logo.png" alt="Darpan Logo" height="55" class="my-3">
         <p class="lead text-secondary">Paste, Explore, Understand JSON with ease</p>
+        <input type="checkbox" id="darkModeToggle" class="btn-check" autocomplete="off"
+            (change)="isDarkMode = !isDarkMode" [checked]="isDarkMode">
+        <label class="btn btn-sm btn-outline-secondary" for="darkModeToggle">
+            <i class="fa" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>
+            {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+        </label>
     </div>
 
     <div class="container-fluid mt-2 mb-2">
@@ -10,17 +16,22 @@
 
             <div class="col-6 p-0 px-1">
                 <div class="p-2 h-100 border-end border-2 bg-white editor-box">
-                    <h6 class="text-muted mb-2 ps-1">INPUT</h6>
-                    <app-web-editor class="editor" [text]="text" (textChange)="onTextChange($event)">
+                    <div class="d-flex">
+                        <h5 class="me-auto">Input</h5>
+                    </div>
+                    <app-web-editor class="editor" [text]="text" [isDarkMode]="isDarkMode"
+                        (textChange)="onTextChange($event)">
                     </app-web-editor>
                 </div>
             </div>
-
             <div class="col-6 p-0 px-1">
                 <div class="h-100 bg-white viewer-box">
                     <div class="p-2 h-100 border-end border-2 bg-white editor-box">
-                        <h6 class="text-muted mb-2 ps-1">OUTPUT</h6>
-                        <app-web-editor class="editor" [text]="text" [isJsonViewerMode]="true" [slug]="'viewer'">
+                        <div class="d-flex">
+                            <h5 class="me-auto">Output</h5>
+                        </div>
+                        <app-web-editor class="editor" [text]="text" [isDarkMode]="isDarkMode" [isJsonViewerMode]="true"
+                            [slug]="'viewer'">
                         </app-web-editor>
                     </div>
                 </div>

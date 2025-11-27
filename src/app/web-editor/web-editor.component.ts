@@ -12,6 +12,7 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
     @Input() text: any = {};
     @Input() slug: string = 'editor';
     @Input() isJsonViewerMode: boolean = false;
+    @Input() isDarkMode: boolean = false;
     @Output() textChange = new EventEmitter<string>();
 
     editor: any;
@@ -23,13 +24,20 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
         if (this.isJsonViewerMode && changes['text'] && !changes['text'].firstChange) {
             this.editor.setValue(JSON.stringify(this.text, null, 2), -1);
         }
+
+        if (this.isDarkMode && changes['isDarkMode'] && !changes['isDarkMode'].firstChange) {
+            this.editor.setTheme("ace/theme/monokai");
+        }
+        else if (!this.isDarkMode && changes['isDarkMode'] && !changes['isDarkMode'].firstChange) {
+            this.editor.setTheme("ace/theme/chrome");
+        }
     }
 
     ngAfterViewInit(): void {
         this.editor = (window as any).ace.edit(this.slug);
         const data = this.isJsonViewerMode ? JSON.stringify(this.text, null, 2) : JSON.stringify(this.text);
         this.editor.setValue(data, -1);
-        this.editor.setTheme("ace/theme/monokai");
+        this.editor.setTheme("ace/theme/chrome");
         this.editor.session.setMode("ace/mode/json");
         this.editor.on('change', () => {
             this.text = this.editor.getValue();

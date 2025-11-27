@@ -1,11 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { WebEditorComponent } from "../web-editor/web-editor.component";
+import { NgClass } from "@angular/common";
 
 @Component({
     selector: "app-json-viewer",
     templateUrl: "./json-viewer.component.html",
     standalone: true,
-    imports: [WebEditorComponent]
+    imports: [WebEditorComponent, NgClass]
 })
 export class JsonViewerComponent implements OnInit {
 
@@ -15,6 +16,7 @@ export class JsonViewerComponent implements OnInit {
         }
     }
     text: any = {};
+    isDarkMode: boolean = false;
 
     onTextChange(updatedText: string) {
         try {
