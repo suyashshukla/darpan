@@ -77,7 +77,12 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
     generateExcel() {
         import("xlsx").then(XLSX => {
-            const worksheet = XLSX.utils.json_to_sheet(JSON.parse(this.editor.getValue()));
+            let jsonData = this.editor.getValue();
+            const isJsonArray = Array.isArray(JSON.parse(jsonData));
+            if (!isJsonArray) {
+                jsonData = `[${jsonData}]`;
+            }
+            const worksheet = XLSX.utils.json_to_sheet(JSON.parse(jsonData));
             const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
             const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
