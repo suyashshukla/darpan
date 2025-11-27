@@ -1,13 +1,13 @@
+import { NgClass } from "@angular/common";
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 
 @Component({
     selector: "app-web-editor",
     templateUrl: "./web-editor.component.html",
     standalone: true,
+    imports: [NgClass],
 })
 export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
-
-
 
     @Input() text: any = {};
     @Input() slug: string = 'editor';
@@ -16,6 +16,7 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
     @Output() textChange = new EventEmitter<string>();
 
     editor: any;
+    isExpanded: boolean = true;
 
     ngOnInit() {
     }
@@ -58,10 +59,34 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
     expandAll() {
         this.editor.session.unfold();
+        this.isExpanded = true;
     }
 
     collapseAll() {
         this.editor.session.foldAll(1);
+        this.isExpanded = false;
+    }
+
+    minifyContent() {
+        try {
+            const jsonContent = JSON.parse(this.editor.getValue());
+            const minifiedContent = JSON.stringify(jsonContent);
+            this.editor.setValue(minifiedContent, -1);
+        }
+        catch (e) {
+            // do nothing
+        }
+    }
+
+    prettyPrintContent() {
+        try {
+            const jsonContent = JSON.parse(this.editor.getValue());
+            const prettyContent = JSON.stringify(jsonContent, null, 2);
+            this.editor.setValue(prettyContent, -1);
+        }
+        catch (e) {
+            // do nothing
+        }
     }
 
     downloadContent() {

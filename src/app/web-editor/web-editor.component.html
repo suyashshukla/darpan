@@ -1,10 +1,7 @@
 @if (isJsonViewerMode) {
 <div class="d-flex align-items-center mb-2">
-    <button class="btn btn-sm btn-outline-secondary me-2" (click)="collapseAll()">
-        <i class="fa fa-compress"></i> Fold All
-    </button>
-    <button class="btn btn-sm btn-outline-secondary me-2" (click)="expandAll()">
-        <i class="fa fa-expand"></i> Expand All
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="isExpanded ? collapseAll() : expandAll()">
+        <i [ngClass]="isExpanded ? 'fa fa-compress' : 'fa fa-expand'"></i> {{isExpanded ? 'Collapse' : 'Expand'}} JSON
     </button>
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="downloadContent()">
         <i class="fa fa-download"></i> Download JSON
@@ -15,9 +12,15 @@
 </div>
 }
 @else {
-<div>
-    <button class="btn btn-sm btn-outline-secondary mb-2" (click)="resetView()">
+<div class="d-flex align-items-center mb-2">
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="resetView()">
         <i class="fa fa-refresh"></i> Reset JSON
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="minifyContent()">
+        <i class="fa fa-compress"></i> Minify JSON
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" (click)="prettyPrintContent()">
+        <i class="fa fa-expand"></i> Prettify JSON
     </button>
 </div>
 }
