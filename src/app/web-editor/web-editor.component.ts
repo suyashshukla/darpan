@@ -68,7 +68,8 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
         const element = document.createElement('a');
         const file = new Blob([this.editor.getValue()], { type: 'application/json' });
         element.href = URL.createObjectURL(file);
-        element.download = 'data.json';
+        const fileName = this.generateUUID();
+        element.download = `${fileName}.json`;
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
         document.body.removeChild(element);
@@ -82,11 +83,21 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
             const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
             const element = document.createElement('a');
             element.href = URL.createObjectURL(data);
-            element.download = 'data.xlsx';
+            const fileName = this.generateUUID();
+            element.download = `${fileName}.xlsx`;
             document.body.appendChild(element);
             element.click();
             document.body.removeChild(element);
         });
+    }
+
+    generateUUID() {
+        const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+            const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+
+        return uuid;
     }
 
     resetView() {
