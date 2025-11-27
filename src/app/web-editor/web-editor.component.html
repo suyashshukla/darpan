@@ -1,3 +1,27 @@
+@if (isJsonViewerMode) {
+<div class="d-flex align-items-center mb-2">
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="collapseAll()">
+        <i class="fa fa-compress"></i> Fold All
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="expandAll()">
+        <i class="fa fa-expand"></i> Expand All
+    </button>
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="downloadContent()">
+        <i class="fa fa-download"></i> Download JSON
+    </button>
+    <button class="btn btn-sm btn-outline-secondary" (click)="generateExcel()">
+        <i class="fa fa-file-excel"></i> Export to Excel
+    </button>
+</div>
+}
+@else {
+<div>
+    <button class="btn btn-sm btn-outline-secondary mb-2" (click)="resetView()">
+        <i class="fa fa-refresh"></i> Reset JSON
+    </button>
+</div>
+}
+
 @if (slug) {
 <div id="{{slug}}">{{ text }}
 </div>

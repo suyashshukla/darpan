@@ -56,6 +56,43 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
         this.editor.session.setUseWrapMode(true);
     }
 
+    expandAll() {
+        this.editor.session.unfold();
+    }
+
+    collapseAll() {
+        this.editor.session.foldAll(1);
+    }
+
+    downloadContent() {
+        const element = document.createElement('a');
+        const file = new Blob([this.editor.getValue()], { type: 'application/json' });
+        element.href = URL.createObjectURL(file);
+        element.download = 'data.json';
+        document.body.appendChild(element); // Required for this to work in FireFox
+        element.click();
+        document.body.removeChild(element);
+    }
+
+    generateExcel() {
+        import("xlsx").then(XLSX => {
+            const worksheet = XLSX.utils.json_to_sheet(JSON.parse(this.editor.getValue()));
+            const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+            const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+            const element = document.createElement('a');
+            element.href = URL.createObjectURL(data);
+            element.download = 'data.xlsx';
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+        });
+    }
+
+    resetView() {
+        this.editor.setValue('{}', -1);
+    }
+
     configureJsonViewerMode(editor: any) {
         editor.renderer.$cursorLayer.element.style.display = "none"; // hides cursor blinking
 
