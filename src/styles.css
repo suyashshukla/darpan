@@ -1,6 +1,6 @@
 #editor,
 #viewer {
-  height: 100%;
+  flex: 1;
 }
 
 body {
@@ -25,10 +25,10 @@ body {
   overflow: hidden;
 }
 
-.editor,
-ngx-json-viewer {
-  height: calc(100vh - 210px);
-  display: block;
+.editor {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 img {
@@ -48,6 +48,7 @@ img {
   .button-text {
     display: none;
   }
+
   .bottom-margin {
     margin-bottom: 12px;
   }
@@ -58,8 +59,8 @@ img {
     display: inline;
     margin-left: 5px;
   }
+
   .bottom-margin {
     margin-bottom: 0;
   }
 }
-
