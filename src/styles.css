@@ -42,3 +42,22 @@ img {
 ::ng-deep ngx-json-viewer {
   background-color: #eef4ff !important;
 }
+
+@media screen and (max-width: 767px) {
+  .button-text {
+    display: none;
+  }
+  .bottom-margin {
+    margin-bottom: 36px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .button-text {
+    display: inline;
+  }
+  .bottom-margin {
+    margin-bottom: 0;
+  }
+}
+

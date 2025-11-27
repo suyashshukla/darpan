@@ -1,23 +1,26 @@
 @if (isJsonViewerMode) {
 <div class="d-flex align-items-center mb-2">
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="isExpanded ? collapseAll() : expandAll()">
-        <i [ngClass]="isExpanded ? 'fa fa-compress' : 'fa fa-expand'"></i> {{isExpanded ? 'Collapse' : 'Expand'}} JSON
+        <i [ngClass]="isExpanded ? 'fa fa-compress' : 'fa fa-expand'"></i> <span class="button-text">{{isExpanded ? 'Collapse' : 'Expand'}} JSON</span>
     </button>
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="downloadContent()">
-        <i class="fa fa-download"></i> Download JSON
+        <i class="fa fa-download"></i> <span class="button-text">Download JSON</span>
     </button>
     <button class="btn btn-sm btn-outline-secondary" (click)="generateExcel()">
-        <i class="fa fa-file-excel"></i> Export to Excel
+        <i class="fa fa-file-excel"></i> <span class="button-text">Export to Excel</span>
     </button>
 </div>
 }
 @else {
 <div class="d-flex align-items-center mb-2">
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="pasteFromClipboard()">
+        <i class="fa fa-paste"></i> <span class="button-text">Paste from Clipboard</span>
+    </button>
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="resetView()">
-        <i class="fa fa-refresh"></i> Reset JSON
+        <i class="fa fa-refresh"></i> <span class="button-text">Reset JSON</span>
     </button>
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="minifyContent()">
-        <i class="fa fa-compress"></i> Minify JSON
+        <i class="fa fa-compress"></i> <span class="button-text">Minify JSON</span>
     </button>
 </div>
 }
