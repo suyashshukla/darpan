@@ -3,6 +3,9 @@
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="isExpanded ? collapseAll() : expandAll()">
         <i [ngClass]="isExpanded ? 'fa fa-compress' : 'fa fa-expand'"></i> <span class="button-text">{{isExpanded ? 'Collapse' : 'Expand'}} JSON</span>
     </button>
+    <button class="btn btn-sm btn-outline-secondary me-2" (click)="copyToClipboard()">
+        <i class="fa fa-copy"></i> <span class="button-text">Copy JSON</span>
+    </button>
     <button class="btn btn-sm btn-outline-secondary me-2" (click)="downloadContent()">
         <i class="fa fa-download"></i> <span class="button-text">Download JSON</span>
     </button>

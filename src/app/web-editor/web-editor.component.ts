@@ -105,6 +105,11 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
             clipText => this.editor.setValue(clipText, -1));
     }
 
+    copyToClipboard() {
+        const textToCopy = this.editor.getValue();
+        navigator.clipboard.writeText(textToCopy);
+    }
+
     generateExcel() {
         import("xlsx").then(XLSX => {
             let jsonData = this.editor.getValue();
