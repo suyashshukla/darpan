@@ -25,10 +25,10 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
             this.editor.setValue(JSON.stringify(this.text, null, 2), -1);
         }
 
-        if (this.isDarkMode && changes['isDarkMode'] && !changes['isDarkMode'].firstChange) {
+        if (this.isDarkMode && changes['isDarkMode'] && changes['isDarkMode'].currentValue && !changes['isDarkMode'].firstChange) {
             this.editor.setTheme("ace/theme/monokai");
         }
-        else if (!this.isDarkMode && changes['isDarkMode'] && !changes['isDarkMode'].firstChange) {
+        else if (!this.isDarkMode && changes['isDarkMode'] && !changes['isDarkMode'].currentValue && !changes['isDarkMode'].firstChange) {
             this.editor.setTheme("ace/theme/chrome");
         }
     }
@@ -37,7 +37,7 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
         this.editor = (window as any).ace.edit(this.slug);
         const data = this.isJsonViewerMode ? JSON.stringify(this.text, null, 2) : JSON.stringify(this.text);
         this.editor.setValue(data, -1);
-        this.editor.setTheme("ace/theme/chrome");
+        this.editor.setTheme(this.isDarkMode ? "ace/theme/monokai" : "ace/theme/chrome");
         this.editor.session.setMode("ace/mode/json");
         this.editor.on('change', () => {
             this.text = this.editor.getValue();

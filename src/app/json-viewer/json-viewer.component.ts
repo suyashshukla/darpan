@@ -10,13 +10,27 @@ import { NgClass } from "@angular/common";
 })
 export class JsonViewerComponent implements OnInit {
 
+    text: any = {};
+    isDarkMode: boolean = false;
     ngOnInit(): void {
         if (window.localStorage.getItem('jsonData')) {
             this.text = JSON.parse(window.localStorage.getItem('jsonData')!);
         }
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            this.isDarkMode = true;
+        }
+        if (window.localStorage.getItem('isDarkMode')) {
+            this.isDarkMode = window.localStorage.getItem('isDarkMode') === 'true';
+        }
+        else {
+            window.localStorage.setItem('isDarkMode', this.isDarkMode.toString());
+        }
     }
-    text: any = {};
-    isDarkMode: boolean = false;
+
+    toggleDarkMode() {
+        this.isDarkMode = !this.isDarkMode;
+        window.localStorage.setItem('isDarkMode', this.isDarkMode.toString());
+    }
 
     onTextChange(updatedText: string) {
         try {
