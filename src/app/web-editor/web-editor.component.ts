@@ -1,5 +1,7 @@
 import { NgClass } from "@angular/common";
 import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { LoaderService } from "../loader.service";
+import * as XLSX from 'xlsx';
 
 @Component({
     selector: "app-web-editor",
@@ -17,6 +19,8 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
     editor: any;
     isExpanded: boolean = true;
+
+    constructor(private loaderService: LoaderService) { }
 
     ngOnInit() {
     }
@@ -90,6 +94,7 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     downloadContent() {
+        this.loaderService.showLoader();
         const element = document.createElement('a');
         const file = new Blob([this.editor.getValue()], { type: 'application/json' });
         element.href = URL.createObjectURL(file);
@@ -98,6 +103,7 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
         document.body.appendChild(element); // Required for this to work in FireFox
         element.click();
         document.body.removeChild(element);
+        this.loaderService.hideLoader();
     }
 
     pasteFromClipboard() {
@@ -111,24 +117,24 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     generateExcel() {
-        import("xlsx").then(XLSX => {
-            let jsonData = this.editor.getValue();
-            const isJsonArray = Array.isArray(JSON.parse(jsonData));
-            if (!isJsonArray) {
-                jsonData = `[${jsonData}]`;
-            }
-            const worksheet = XLSX.utils.json_to_sheet(JSON.parse(jsonData));
-            const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-            const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-            const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
-            const element = document.createElement('a');
-            element.href = URL.createObjectURL(data);
-            const fileName = this.generateUUID();
-            element.download = `${fileName}.xlsx`;
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        });
+        this.loaderService.showLoader();
+        let jsonData = this.editor.getValue();
+        const isJsonArray = Array.isArray(JSON.parse(jsonData));
+        if (!isJsonArray) {
+            jsonData = `[${jsonData}]`;
+        }
+        const worksheet = XLSX.utils.json_to_sheet(JSON.parse(jsonData));
+        const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
+        const excelBuffer: any = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+        const data: Blob = new Blob([excelBuffer], { type: 'application/octet-stream' });
+        const element = document.createElement('a');
+        element.href = URL.createObjectURL(data);
+        const fileName = this.generateUUID();
+        element.download = `${fileName}.xlsx`;
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+        this.loaderService.hideLoader();
     }
 
     generateUUID() {

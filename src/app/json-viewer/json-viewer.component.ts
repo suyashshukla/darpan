@@ -9,7 +9,7 @@ import { NgClass } from "@angular/common";
     imports: [WebEditorComponent, NgClass]
 })
 export class JsonViewerComponent implements OnInit {
-
+    title = 'Darpan | JSON Viewer & Editor';
     text: any = {};
     isDarkMode: boolean = false;
     ngOnInit(): void {
