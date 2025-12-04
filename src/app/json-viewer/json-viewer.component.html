@@ -4,16 +4,21 @@
         <img src="./assets/darpan-logo.png" alt="Darpan Logo" height="36" class="my-1">
         <div class="d-flex align-items-center">
             <div class="me-2">
+                <a class="btn btn-sm btn-outline-primary" (click)="generateShareableLink()">
+                    <i class="fa fa-share"></i> <span class="button-text">{{shareButtonText}}</span>
+                </a>
+            </div>
+            <div class="me-2">
                 <input type="checkbox" id="darkModeToggle" class="btn-check" autocomplete="off"
                     (change)="toggleDarkMode()" [checked]="isDarkMode">
                 <label class="btn btn-sm btn-outline-secondary" for="darkModeToggle">
                     <i class="fa" [ngClass]="isDarkMode ? 'fa-sun' : 'fa-moon'"></i>
-                    {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+                    <span class="button-text">{{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}</span>
                 </label>
             </div>
             <div>
                 <a href="https://codiebe.com" target="_blank" class="btn btn-sm btn-outline-info">
-                    <i class="fa fa-external-link me-1"></i> <span>Visit Codiebe</span>
+                    <i class="fa fa-external-link me-1"></i> <span class="button-text">Visit Codiebe</span>
                 </a>
             </div>
         </div>

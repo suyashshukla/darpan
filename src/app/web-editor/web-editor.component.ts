@@ -1,5 +1,5 @@
 import { NgClass } from "@angular/common";
-import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, NgZone, OnChanges, OnInit, Output, SimpleChanges } from "@angular/core";
 import { LoaderService } from "../loader.service";
 import * as XLSX from 'xlsx';
 
@@ -19,8 +19,13 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
 
     editor: any;
     isExpanded: boolean = true;
+    copyButtonText: string = 'Copy JSON';
+    pasteButtonText: string = 'Paste JSON';
 
-    constructor(private loaderService: LoaderService) { }
+    constructor(
+        private loaderService: LoaderService,
+        private changeDetectorRef: ChangeDetectorRef
+    ) { }
 
     ngOnInit() {
     }
@@ -107,13 +112,34 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     pasteFromClipboard() {
+        this.pasteButtonText = 'Pasted!';
         navigator.clipboard.readText().then(
-            clipText => this.editor.setValue(clipText, -1));
+            clipText => this.editor.setValue(this.getJsonContent(clipText), -1));
+        setTimeout(() => {
+            this.pasteButtonText = 'Paste JSON';
+            this.changeDetectorRef.detectChanges();
+            this.changeDetectorRef.markForCheck();
+        }, 1000);
+    }
+
+    getJsonContent(data: any) {
+        try {
+            return JSON.stringify(JSON.parse(data));
+        }
+        catch (e) {
+            return '{}';
+        }
     }
 
     copyToClipboard() {
         const textToCopy = this.editor.getValue();
         navigator.clipboard.writeText(textToCopy);
+        this.copyButtonText = 'Copied!';
+        setTimeout(() => {
+            this.copyButtonText = 'Copy JSON';
+            this.changeDetectorRef.detectChanges();
+            this.changeDetectorRef.markForCheck();
+        }, 1000);
     }
 
     generateExcel() {
