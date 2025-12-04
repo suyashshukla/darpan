@@ -2,8 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { WebEditorComponent } from "../web-editor/web-editor.component";
 import { NgClass } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
-import { Ursho } from "../ursho.model";
-import { UrshoService } from "../ursho.service";
+import { JsonDataSharing } from "../json-data-share.model";
+import { JsonDataSharingService } from "../json-data-sharing.service";
 
 @Component({
     selector: "app-json-viewer",
@@ -20,7 +20,7 @@ export class JsonViewerComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private changeDetectorRef: ChangeDetectorRef,
-        private urshoService: UrshoService
+        private jsonDataSharingService: JsonDataSharingService
     ) { }
 
     ngOnInit(): void {
@@ -37,7 +37,11 @@ export class JsonViewerComponent implements OnInit {
     readFromQueryParam() {
         if (this.route.snapshot.queryParams['data']) {
             try {
-                this.text = JSON.parse(atob(this.route.snapshot.queryParams['data']));
+                this.jsonDataSharingService.getJsonDataShareLink(this.route.snapshot.queryParams['data']).subscribe(response => {
+                    this.text = JSON.parse(atob(response.content));
+                }, error => {
+                    this.readFromLocalStorage();
+                });
             }
             catch (e) {
                 this.readFromLocalStorage();
@@ -74,14 +78,11 @@ export class JsonViewerComponent implements OnInit {
         const baseUrl = window.location.origin + window.location.pathname;
         let shareableLink = `${baseUrl}?data=${base64Data}`;
 
-        this.urshoService.generateUrshoLink({
-            name: 'Shared via Darpan',
-            sourceUrl: shareableLink,
-            description: 'JSON shared via Darpan JSON Viewer & Editor',
-            hashValue: '' // Hash value can be generated on the backend if needed
+        this.jsonDataSharingService.addJsonDataShareLink({
+            content: base64Data
         }).subscribe(response => {
             this.shareButtonText = 'Generated!';
-            shareableLink = `https://backend.codiebe.com/ursho/${response.hashValue}`;
+            shareableLink = `https://darpan.codiebe.com/json?data=${response.jsonShareId}`;
             navigator.clipboard.writeText(shareableLink);
             setTimeout(() => {
                 this.shareButtonText = 'Share';
