@@ -32,7 +32,7 @@
                     <div class="d-flex">
                         <h5 class="me-auto">Input</h5>
                     </div>
-                    <app-web-editor class="editor" [text]="text" [isDarkMode]="isDarkMode"
+                    <app-web-editor class="editor" [text]="inputText" [isDarkMode]="isDarkMode"
                         (textChange)="onTextChange($event)">
                     </app-web-editor>
                 </div>
@@ -43,7 +43,7 @@
                         <div class="d-flex">
                             <h5 class="me-auto">Output</h5>
                         </div>
-                        <app-web-editor class="editor" [text]="text" [isDarkMode]="isDarkMode" [isJsonViewerMode]="true"
+                        <app-web-editor class="editor" [text]="outputText" [isDarkMode]="isDarkMode" [isJsonViewerMode]="true"
                             [slug]="'viewer'">
                         </app-web-editor>
                     </div>
@@ -52,3 +52,27 @@
         </div>
     </div>
 </div>
+
+<ng-template #shareLinkModal>
+    <div class="modal-header">
+        <h5 class="modal-title">Shareable Link</h5>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modalRef?.hide()"></button>
+    </div>
+    <div class="modal-body">
+        <p>You can share the following link:</p>
+        <input type="text" class="form-control" [value]="shareableLink" readonly (click)="copyToClipboard(shareableLink)">
+        <small class="text-muted">Click the input box to copy the link to clipboard.</small>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modalRef?.hide()">Close</button>
+    </div>
+</ng-template>
+
+<ng-template #copiedToClipboardTemplate>
+    <div class="modal-body">
+        <p>Link copied to clipboard!</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="modalRef?.hide()">OK</button>
+    </div>
+</ng-template>

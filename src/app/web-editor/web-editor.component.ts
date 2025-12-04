@@ -31,7 +31,7 @@ export class WebEditorComponent implements OnInit, OnChanges, AfterViewInit {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (this.isJsonViewerMode && changes['text'] && !changes['text'].firstChange) {
+        if (changes['text'] && !changes['text'].firstChange) {
             this.editor.setValue(JSON.stringify(this.text, null, 2), -1);
         }
 
