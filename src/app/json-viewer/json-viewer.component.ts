@@ -2,6 +2,8 @@ import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { WebEditorComponent } from "../web-editor/web-editor.component";
 import { NgClass } from "@angular/common";
 import { ActivatedRoute, RouterModule } from "@angular/router";
+import { Ursho } from "../ursho.model";
+import { UrshoService } from "../ursho.service";
 
 @Component({
     selector: "app-json-viewer",
@@ -17,7 +19,8 @@ export class JsonViewerComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private changeDetectorRef: ChangeDetectorRef
+        private changeDetectorRef: ChangeDetectorRef,
+        private urshoService: UrshoService
     ) { }
 
     ngOnInit(): void {
@@ -66,16 +69,26 @@ export class JsonViewerComponent implements OnInit {
     }
 
     generateShareableLink() {
-        this.shareButtonText = 'Copied!';
+        this.shareButtonText = 'Generating..';
         const base64Data = btoa(JSON.stringify(this.text));
         const baseUrl = window.location.origin + window.location.pathname;
-        const shareableLink = `${baseUrl}?data=${base64Data}`;
-        navigator.clipboard.writeText(shareableLink);
-        setTimeout(() => {
-            this.shareButtonText = 'Share';
-            this.changeDetectorRef.detectChanges();
-            this.changeDetectorRef.markForCheck();
-        }, 1000);
+        let shareableLink = `${baseUrl}?data=${base64Data}`;
+
+        this.urshoService.generateUrshoLink({
+            name: 'Shared via Darpan',
+            sourceUrl: shareableLink,
+            description: 'JSON shared via Darpan JSON Viewer & Editor',
+            hashValue: '' // Hash value can be generated on the backend if needed
+        }).subscribe(response => {
+            this.shareButtonText = 'Generated!';
+            shareableLink = `https://backend.codiebe.com/ursho/${response.hashValue}`;
+            navigator.clipboard.writeText(shareableLink);
+            setTimeout(() => {
+                this.shareButtonText = 'Share';
+                this.changeDetectorRef.detectChanges();
+                this.changeDetectorRef.markForCheck();
+            }, 1000);
+        });
     }
 
     toggleDarkMode() {
