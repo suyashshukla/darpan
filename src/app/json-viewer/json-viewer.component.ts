@@ -20,16 +20,17 @@ export class JsonViewerComponent implements OnInit {
   shareButtonText: string = 'Copy Link';
   modalRef: BsModalRef | null = null;
   shareableLink: string = '';
+  isLinkCopied: boolean = false;
 
   @ViewChild('shareLinkModal') shareLinkModal!: TemplateRef<any>;
-  @ViewChild('copyToClipboardTemplate') aboutModal!: TemplateRef<any>;
+  @ViewChild('copyToClipboardTemplate') copyToClipboardModal!: TemplateRef<any>;
 
   constructor(
     private route: ActivatedRoute,
     private changeDetectorRef: ChangeDetectorRef,
     private jsonDataSharingService: JsonDataSharingService,
     private loaderService: LoaderService,
-    //private modalService: BsModalService
+    private modalService: BsModalService
   ) {}
 
   ngOnInit(): void {
@@ -101,13 +102,15 @@ export class JsonViewerComponent implements OnInit {
       })
       .subscribe((response) => {
         this.shareButtonText = 'Generated!';
-        shareableLink = `https://darpan.codiebe.com/json?data=${response.jsonShareId}`;
+        shareableLink = `https://${window.location.host}/json?data=${response.jsonShareId}`;
         this.shareableLink = shareableLink;
-        this.copyToClipboard(shareableLink);
         setTimeout(() => {
           this.shareButtonText = 'Copy Link';
           this.loaderService.hideLoader();
-          //this.modalRef = this.modalService.show(this.shareLinkModal);
+          this.isLinkCopied = false;
+          this.modalRef = this.modalService.show(this.shareLinkModal, {
+            ignoreBackdropClick: true,
+          });
           this.changeDetectorRef.detectChanges();
           this.changeDetectorRef.markForCheck();
         }, 1000);
@@ -116,6 +119,7 @@ export class JsonViewerComponent implements OnInit {
 
   copyToClipboard(text: string) {
     navigator.clipboard.writeText(text);
+    this.isLinkCopied = true;
   }
 
   toggleDarkMode() {

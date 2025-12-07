@@ -15,11 +15,14 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular/build:application",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "../../../../usr/local/var/www/dist/darpan",
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
+            "polyfills": [
+              "zone.js"
+            ],
             "assets": [
               {
                 "glob": "**/*",
